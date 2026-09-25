@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Property Tracker — Panky Salomón (Uso interno)</title>
+<title>Property Tracker — Panky Salomón</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -82,6 +82,20 @@
   .brand-foot-small{font-size:11px;color:var(--muted);opacity:.75;margin-top:14px}
   .empty{background:var(--sand-card);border:1px dashed var(--line);border-radius:14px;padding:38px 24px;text-align:center;color:var(--muted)}
   @media(max-width:640px){.controls{padding:12px}}
+
+  .photos-btn{position:absolute;bottom:10px;left:10px;background:rgba(13,31,51,.72);color:#fff;border:none;border-radius:99px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .photos-btn:hover{background:rgba(13,31,51,.9)}
+  .lightbox{position:fixed;inset:0;background:rgba(10,16,24,.92);z-index:999;display:flex;align-items:center;justify-content:center;padding:24px}
+  .lightbox[hidden]{display:none}
+  .lightbox-inner{max-width:min(920px,92vw);width:100%;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .lightbox-imgwrap{position:relative;width:100%;display:flex;align-items:center;justify-content:center}
+  .lightbox img{max-width:100%;max-height:72vh;border-radius:10px;object-fit:contain;background:#0d1f33;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .lightbox-nav{background:rgba(255,253,248,.14);border:1px solid rgba(255,253,248,.3);color:#fdfbf5;width:42px;height:42px;border-radius:99px;font-size:20px;cursor:pointer;flex-shrink:0}
+  .lightbox-nav:hover{background:rgba(255,253,248,.28)}
+  .lightbox-navrow{display:flex;align-items:center;gap:14px;width:100%;justify-content:center}
+  .lightbox-close{position:absolute;top:-6px;right:-6px;background:#fdfbf5;color:var(--bay-deep);border:none;width:34px;height:34px;border-radius:99px;font-size:18px;font-weight:700;cursor:pointer}
+  .lightbox-meta{color:#fdfbf5;font-size:13px;text-align:center;opacity:.85}
+  .lightbox-meta b{font-weight:700}
 </style>
 </head>
 <body>
@@ -100,7 +114,7 @@
     </div>
     <div class="header-inner">
       <div class="header-left">
-        <div class="eyebrow">Ciudad de Panamá · Cliente: Panky Salomón · Asesor: Nicholas Wolf · USO INTERNO — no enviar al cliente</div>
+        <div class="eyebrow">Ciudad de Panamá · Cliente: Panky Salomón · Asesor: Nicholas Wolf</div>
         <h1>Property Tracker</h1>
       </div>
       <div class="stats" id="stats"></div>
@@ -201,6 +215,7 @@ const PROPERTIES = [
     description:"Apartamento de 3 recámaras y 2 baños en Lexus Tower, Coco del Mar, con amplia sala-comedor, balcón, cuarto y baño de empleada, 2 estacionamientos y 1 depósito. Buen paquete de áreas sociales: piscina, gimnasio, salón de eventos y zona de juegos infantiles.",
     considerations:["169 m² construidos — $1,627/m², el precio más bajo del grupo","Actualizado el 10/08/2026 — algo menos reciente, confirmar disponibilidad","2 estacionamientos y depósito","Buen paquete de área social para el precio"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/70/95/48/32709548_bb642d2ec724ddb988269cd0f78512db-a0f9225",
+    photos:["https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/70/95/48/32709548_bb642d2ec724ddb988269cd0f78512db-a0f9225"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/venta-de-apartamento-con-2-estacionamientos-y-deposito-en-lexus-tower-coco-del-mar/32709548",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -216,6 +231,7 @@ const PROPERTIES = [
     description:"Apartamento amoblado de 3 recámaras y 2 baños en Coco del Mar, con 170 m² de construcción, balcón, piscina y salón de fiestas en el condominio, seguridad 24/7 y parking de visitas. Cerca de la Avenida Cincuentenario, supermercados y bancos.",
     considerations:["170 m² construidos — $1,588/m², amoblado","Área social más modesta que otras opciones del grupo, pero buen precio por m²","Actualizado el 22/09/2026","2 estacionamientos"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/39/66/78/32396678_552c182",
+    photos:["https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/39/66/78/32396678_552c182"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/amplio-en-san-francisco/32396678",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -231,6 +247,7 @@ const PROPERTIES = [
     description:"Amplio apartamento de 200 m² en el exclusivo PH TAO, en el límite entre San Francisco y Coco del Mar (Calle 74), piso 25 con vista panorámica a la ciudad y al mar. 3 recámaras cada una con baño privado, cuarto y baño de empleada, 2 estacionamientos techados. Áreas sociales amplias: salón de fiestas, piscina, gimnasio completo, parque infantil y mini cancha de fútbol.",
     considerations:["200 m² construidos — $1,600/m²","Ubicado justo en el límite entre Coco del Mar y San Francisco — confirmar con el cliente si esto es aceptable, el portal lo cataloga como Coco del Mar","Buen paquete de área social (salón de fiestas, cancha, jardines)","Actualizado el 19/09/2026, mantenimiento $334/mes"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/40/05/44/32400544_926229a968abb043fa2fd4b018c57c0b-ddc5f0d",
+    photos:["https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/40/05/44/32400544_926229a968abb043fa2fd4b018c57c0b-ddc5f0d"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/venta-apartamento-san-francisco-macp/32400544",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -248,6 +265,7 @@ const PROPERTIES = [
     description:"Amplio apartamento de 171 m² en piso alto con vista panorámica de la ciudad, cerca de Vía Israel y Punta Pacífica. Tres recámaras, cuarto de servicio y dos estacionamientos. Dos piscinas, gimnasio, salón de eventos y conserjería.",
     considerations:["171 m² construidos — $1,608/m²","Dos piscinas (adultos y niños), buen paquete de amenidades familiares","Actualizado el 21/09/2026","2 estacionamientos, cuarto de servicio"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/82/69/48/32826948_1595687400dd2857e65a4ddf7309b781-5a18d65",
+    photos:["https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/82/69/48/32826948_1595687400dd2857e65a4ddf7309b781-5a18d65"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/venta-apartamento-san-francisco-piso-alto-vista-panoramica/32826948",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -263,6 +281,7 @@ const PROPERTIES = [
     description:"Apartamento de 181 m² en PH Country Park, San Francisco, con 3 recámaras amplias, cuarto de empleada y 2 estacionamientos. Destaca por su área social: piscina, gimnasio equipado, canchas de tenis y una amplia zona infantil.",
     considerations:["181 m² construidos — $1,575/m²","Canchas de tenis — amenidad poco común en el grupo","Actualizado el 25/09/2026, el más reciente","2 estacionamientos, mantenimiento $205/mes, el más bajo del grupo en San Francisco"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/84/91/61/32849161_a43299",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_a43299","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_e8fadf","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_c83079","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_80b300","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_b09419","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_2b1b67","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_22a1c3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_53e010","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/84/91/61/32849161_d6438d"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/se-vende-apartamento-en-ph-country-park-san-francisco-asdel/32849161",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -278,6 +297,7 @@ const PROPERTIES = [
     description:"Apartamento espacioso de 170 m² en Punta Pacífica, a pasos de Multiplaza, con amplia terraza y buena iluminación. Tres recámaras, cuarto y baño de empleada, dos estacionamientos y depósito.",
     considerations:["170 m² construidos — $1,824/m²","El anuncio no detalla amenidades específicas del edificio más allá de \"área social\" — verificar amenidades reales antes de presentar como fuerte candidato para este cliente","Actualizado el 23/09/2026","2 estacionamientos y depósito"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-2cc3447",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-2cc3447","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-455a8df","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-227849d","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-09206f1","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-72b9083","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-5660dc2","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-5480ce7","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-fa05e2e","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-e9f90e1","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-d8aa1b3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-79c3e92","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-ac3b6ec","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-a8af7a9","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-4b0aaf5","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-8595251","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/96/65/41/32966541_a510af3a6b9acc769d5380658235af27-63fcabe"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/se-vende-apartamento-en-punta-pacifica-gcea26-8502/32966541",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -293,6 +313,7 @@ const PROPERTIES = [
     description:"Amplio apartamento de 194 m² en Tao Tower, San Francisco, con 3 recámaras, den, cocina abierta, balcón, cuarto de empleada y 2 estacionamientos. Completo paquete de áreas sociales: piscina, gimnasio equipado, parque infantil y salón de fiestas.",
     considerations:["194 m² construidos — $1,541/m²","Nota: probablemente el mismo edificio que PH TAO (Coco del Mar) pero unidad y agente distintos — confirmar antes de contactar a ambos","Buen paquete de área social","Actualizado el 08/09/2026, mantenimiento $311/mes"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/31/59/46/55/31594655_9a1778",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_9a1778","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_5c965d","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_3ad256","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_a21905","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_21a9e6","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_24e720","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_6b764c","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_2eca7e","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_fd7096","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_3c52c4","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_1d742c","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_7118e6","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_4d23f6","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_0a0a4f","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_06ba4f","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_09b897","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_02affe","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_3a2b1f","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_69422e","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/31/59/46/55/31594655_40f74d"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/venta-de-amplio-y-bello-apartamento-con-vista-al-mar-en-tao-tower-san-francisco/31594655",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -308,6 +329,7 @@ const PROPERTIES = [
     description:"Apartamento remodelado de 160.75 m² en PH Citrus, calle 74 San Francisco, a pasos del Parque Omar. 3 recámaras con walk-in closet y baño privado, cocina semi-integrada remodelada, balcón en L y 2 estacionamientos.",
     considerations:["160.75 m² construidos — $1,991/m², remodelado","Mantenimiento $402/mes, el más alto del grupo — a tener en cuenta en el presupuesto mensual","Actualizado el 20/09/2026","2 estacionamientos"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/94/41/68/32944168_4939023",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_4939023","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_acbf9c3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_11dc64e","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_d9ce490","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_030aac8","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_5144294","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_46ef6d6","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_2172f51","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_6813af2","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_e75416f","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_220ea8b","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_4f3b9b1","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_8eb2141","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_565fbc3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_ab039f1","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_1c73c4c","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_32d4f9d","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/41/68/32944168_1f40bbb"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/apartamento-con-hermosas-vistas-en-ph-citrus-san-francisco/32944168",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -323,6 +345,7 @@ const PROPERTIES = [
     description:"Apartamento luminoso de 165 m² en PH Mystic Point, Punta Pacífica, con balcón y vista abierta a la ciudad, cerca de Multiplaza. Tres recámaras y tres baños, dos estacionamientos y amplia área de lavandería.",
     considerations:["165 m² construidos — $2,091/m²","Amenidades estándar completas: piscina, gimnasio, área infantil y BBQ","Actualizado el 22/09/2026","2 estacionamientos"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-e757166",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-e757166","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-ce61bbe","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-2cb5fe1","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-a5a14ce","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-1aebbcc","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/91/27/95/32912795_72847990b152398dcab439eeaf275fbd-25b2bb5"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/en-venta-ph-mystic-point-punta-pacifica-us-345-000/32912795",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -338,6 +361,7 @@ const PROPERTIES = [
     description:"Apartamento de 207 m² en PH Star Bay, Vía Porras (San Francisco), a pasos del Hotel Sheraton y Atlapa. Destaca por sus 3 estacionamientos más 1 depósito e iluminación de 180 grados.",
     considerations:["207 m² construidos — $1,449/m², el precio por m² más bajo del grupo","Mantenimiento $499.64/mes — el más alto de todo el grupo por mucho, a evaluar con cuidado","Área social más limitada (solo piscina) frente a otras opciones del grupo","Actualizado el 23/09/2026, 3 estacionamientos y depósito"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-2e3343b",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-2e3343b","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-d6ee5e6","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-8e423d3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-2e73e1e","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-4c861fc","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-af3e5c8","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-ef293fb","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-ab0a9fd","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-a99fd31","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-52e46a4","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-ce6cc62","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-4032511","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-1378b9d","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-927f89d","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-fc3c685","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-d9e5804","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-965a5b8","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-c8423b4","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/94/53/07/32945307_e1237e3c71cf8c6fd9710615049cbde8-43d7720"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/venta-de-apartamento-en-ph-star-bay-3-estacionamientos-1-deposito/32945307",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -353,6 +377,7 @@ const PROPERTIES = [
     description:"Apartamento con precio reducido de 214.39 m² en PH Joy Tower, San Francisco, cerca del Parque Omar. Tres recámaras, sala-comedor amplio, balcón grande, cocina con desayunador y cuarto de servicio. Área social completa: piscina, gimnasio, sky lounge, área deportiva y zona de juegos infantiles.",
     considerations:["214.39 m² construidos — $1,539/m², precio recientemente reducido","Uno de los paquetes de área social más completos del grupo (sky lounge + área deportiva)","Actualizado el 24/09/2026, el más reciente del grupo en San Francisco","2 estacionamientos, cuarto de servicio"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/97/89/29/32978929_0e9d5b3",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_0e9d5b3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_5ba1395","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_5d1c2e3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_cb2a9f4","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_b63cdd9","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_b198f13","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_ac31ac1","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_99e74cc","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_4ae65a0","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_b28aa8a","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_0900839","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_0f94510","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_e16c4ff","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/97/89/29/32978929_89953c7"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/precio-reducido-apartamento-en-venta-en-san-francisco-ph-joy-tower/32978929",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -368,6 +393,7 @@ const PROPERTIES = [
     description:"Apartamento de 220 m² con espectacular vista al mar en PH Ocean Drive, Punta Pacífica. Tres recámaras, den abierto, cocina cerrada en perfecto estado y 2 estacionamientos. Amenidades completas: piscina, gimnasio, salón social y parque infantil.",
     considerations:["220 m² construidos — $1,591/m², el más grande del grupo con vista al mar","Precio justo en el tope del presupuesto de referencia ($350K)","Mantenimiento $400/mes","Actualizado el 23/09/2026, 2 estacionamientos"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-a3849d3",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-a3849d3","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-06c9c82","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-ab2ab3c","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-f9f3799","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-3e9e7c6","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-f020eb9","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-03fe716","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-aa1aa9b","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-051809f","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-5ab16e7","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/92/79/47/32927947_154fa6e5723479ad13c61de8cce4e3c0-44e0516"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/se-vende-apartamento-con-vista-al-mar-ph-ocean-drive-punta-pacifica/32927947",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -383,6 +409,7 @@ const PROPERTIES = [
     description:"Dúplex remodelado de 176 m² en Punta Pacífica, con techos de doble altura, ventanales de piso a techo y vistas panorámicas a la ciudad. Dos áreas sociales distintas, gimnasio, sauna y un carril de natación temporizado.",
     considerations:["176 m² construidos — $2,102/m², dúplex remodelado, solo 2 recámaras","Dos áreas sociales distintas y carril de natación — poco común en la zona","Precio por encima del presupuesto de referencia de $350K","Actualizado el 22/09/2026, 1 estacionamiento"],
     thumbnail:"https://photos.encuentra24.com/t_or_fh_l/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-1bec3bf",
+    photos:["https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-1bec3bf","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-a31a507","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-8ddb65a","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-6b2fd65","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-0fbe064","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-5f197ce","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-bd28320","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-f13c96a","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-01c468a","https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/pa/32/89/61/23/32896123_8119104fd771efb8699645ca710ff623-2850eeb"],
     listingUrl:"https://www.encuentra24.com/panama-es/bienes-raices-venta-de-propiedades-apartamentos/venta-de-apartamento-ph-loft-four-41/32896123",
     source:"Portal inmobiliario",
     lastVerified:"2026-09-25"
@@ -465,6 +492,7 @@ function cardHtml(p){
       <span class="verdict-tag ${verdictClass[p.verdict]||''}">${p.verdict}</span>
       <button class="fav-btn ${isFav?'on':''}" onclick="toggleFav('${p.id}')" title="Marcar como favorito">${isFav?'♥':'♡'}${count?` ${count}`:''}</button>
       <span class="source-tag">${p.source}</span>
+      ${p.photos && p.photos.length > 1 ? `<button class="photos-btn" onclick="openGallery('${p.id}')" title="Ver más fotos">📷 Ver más fotos (${p.photos.length})</button>` : ""}
     </div>
     <div class="card-body">
       <h3>${p.building}</h3>
@@ -493,7 +521,7 @@ function cardHtml(p){
       ${p.agent === "Nicholas Wolf" ? `<div class="agent-badge">Contacto: Nicholas Wolf</div>` : ""}
       ${p.maintenance ? `<div class="maint">Mantenimiento: $${p.maintenance}/mes</div>` : ""}
       <div class="card-foot">
-        <a class="ref-badge" href="${p.listingUrl}" target="_blank" rel="noopener">Ref: ${p.id.replace(CLIENT_PREFIX,"")}</a>
+        <span class="ref-badge">Ref: ${p.id.replace(CLIENT_PREFIX,"")}</span>
         <span class="updated">verificado ${p.lastVerified}</span>
       </div>
     </div>
@@ -601,11 +629,60 @@ document.getElementById("clear").addEventListener("click", ()=>{
   render();
 });
 
+
+let galleryPhotos = [];
+let galleryIndex = 0;
+function openGallery(id){
+  const p = PROPERTIES.find(x=>x.id===id);
+  if(!p || !p.photos || !p.photos.length) return;
+  galleryPhotos = p.photos;
+  galleryIndex = 0;
+  document.getElementById("lightbox-title").textContent = p.building;
+  showPhoto();
+  document.getElementById("lightbox").hidden = false;
+  document.body.style.overflow = "hidden";
+}
+function closeGallery(){
+  document.getElementById("lightbox").hidden = true;
+  document.body.style.overflow = "";
+}
+function showPhoto(){
+  document.getElementById("lightbox-img").src = galleryPhotos[galleryIndex];
+  document.getElementById("lightbox-counter").textContent = (galleryIndex+1)+" / "+galleryPhotos.length;
+}
+function nextPhoto(){ galleryIndex = (galleryIndex+1) % galleryPhotos.length; showPhoto(); }
+function prevPhoto(){ galleryIndex = (galleryIndex-1+galleryPhotos.length) % galleryPhotos.length; showPhoto(); }
+document.addEventListener("keydown", e=>{
+  const lb = document.getElementById("lightbox");
+  if(lb && !lb.hidden){
+    if(e.key==="Escape") closeGallery();
+    if(e.key==="ArrowRight") nextPhoto();
+    if(e.key==="ArrowLeft") prevPhoto();
+  }
+});
+document.getElementById("lightbox").addEventListener("click", e=>{
+  if(e.target.id === "lightbox") closeGallery();
+});
+
 (async function init(){
   populateSelectOptions();
   await loadFavorites();
   render();
 })();
 </script>
+
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lightbox-inner">
+    <div class="lightbox-imgwrap">
+      <button class="lightbox-close" onclick="closeGallery()" title="Cerrar" aria-label="Cerrar">✕</button>
+      <img id="lightbox-img" src="" alt="Foto de la propiedad">
+    </div>
+    <div class="lightbox-navrow">
+      <button class="lightbox-nav" onclick="prevPhoto()" title="Anterior" aria-label="Foto anterior">‹</button>
+      <div class="lightbox-meta"><b id="lightbox-title"></b><br><span id="lightbox-counter"></span></div>
+      <button class="lightbox-nav" onclick="nextPhoto()" title="Siguiente" aria-label="Foto siguiente">›</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
